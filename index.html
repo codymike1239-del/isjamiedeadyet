@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Is He Dead?</title>
+  <title>Is Jamie Dead?</title>
 
   <style>
     * {
@@ -35,7 +35,6 @@
     .status {
       font-size: 5rem;
       font-weight: bold;
-      color: #45d483;
       margin: 20px 0;
     }
 
@@ -44,51 +43,10 @@
       font-size: 0.9rem;
     }
 
-    .counters {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .counter {
-      background: #191919;
-      border: 1px solid #292929;
-      border-radius: 8px;
-      padding: 12px 25px;
-      min-width: 100px;
-    }
-
-    .number {
-      display: block;
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
-
-    .yes {
-      color: #ff5c5c;
-    }
-
-    .no {
-      color: #45d483;
-    }
-
-    button {
+    .updated {
       margin-top: 25px;
-      padding: 8px 16px;
-
-      background: #191919;
-      color: #aaa;
-      border: 1px solid #333;
-      border-radius: 6px;
-
-      cursor: pointer;
-    }
-
-    button:hover {
-      color: white;
-      border-color: #45d483;
+      color: #555;
+      font-size: 0.75rem;
     }
   </style>
 </head>
@@ -96,50 +54,36 @@
 <body>
 
   <div class="container">
-    <h1>Is He Dead?</h1>
+    <h1>Is Jamie Dead?</h1>
 
-    <div class="status" id="status">NO</div>
+    <div class="status" id="status"></div>
 
-    <div class="subtitle">Extremely reliable information</div>
-
-    <div class="counters">
-      <div class="counter">
-        <span class="number yes" id="yesCount">0</span>
-        YES
-      </div>
-
-      <div class="counter">
-        <span class="number no" id="noCount">0</span>
-        NO
-      </div>
+    <div class="subtitle">
+      Extremely reliable information
     </div>
 
-    <button onclick="vote()">Vote</button>
+    <div class="updated">
+      Last checked: Definitely
+    </div>
   </div>
 
   <script>
-    let yes = 0;
-    let no = 0;
+    // ==========================================
+    // CHANGE THIS TO "YES" OR "NO"
+    // ==========================================
 
-    function vote() {
-      if (Math.random() < 0.5) {
-        yes++;
-      } else {
-        no++;
-      }
+    const isDead = "NO";
 
-      document.getElementById("yesCount").textContent = yes;
-      document.getElementById("noCount").textContent = no;
+    // ==========================================
 
-      const status = document.getElementById("status");
+    const status = document.getElementById("status");
 
-      if (yes > no) {
-        status.textContent = "YES";
-        status.style.color = "#ff5c5c";
-      } else {
-        status.textContent = "NO";
-        status.style.color = "#45d483";
-      }
+    if (isDead === "YES") {
+      status.textContent = "YES";
+      status.style.color = "#ff5c5c";
+    } else {
+      status.textContent = "NO";
+      status.style.color = "#45d483";
     }
   </script>
 
