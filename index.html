@@ -1,12 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Is Jamie Dead?</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -14,6 +19,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -25,6 +31,7 @@
 
     .container {
       text-align: center;
+      padding: 20px;
     }
 
     h1 {
@@ -38,9 +45,17 @@
       margin: 20px 0;
     }
 
+    .age {
+      font-size: 1.25rem;
+      color: #bbb;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
     .subtitle {
       color: #777;
       font-size: 0.9rem;
+      margin-top: 20px;
     }
 
     .updated {
@@ -48,15 +63,20 @@
       color: #555;
       font-size: 0.75rem;
     }
+
   </style>
+
 </head>
 
 <body>
 
   <div class="container">
+
     <h1>Is Jamie Dead?</h1>
 
     <div class="status" id="status"></div>
+
+    <div class="age" id="age"></div>
 
     <div class="subtitle">
       Extremely reliable information
@@ -65,27 +85,232 @@
     <div class="updated">
       Last checked: Definitely
     </div>
+
   </div>
 
   <script>
+
     // ==========================================
     // CHANGE THIS TO "YES" OR "NO"
     // ==========================================
 
     const isDead = "NO";
 
+
+    // ==========================================
+    // DATE AND TIME OF BIRTH
+    // October 7, 2012 at 13:00 (1:00 PM)
+    // ==========================================
+
+    const birthDate = new Date(
+      2012,
+      9,
+      7,
+      13,
+      0,
+      0
+    );
+
+
+    // ==========================================
+    // GET HTML ELEMENTS
     // ==========================================
 
     const status = document.getElementById("status");
 
+    const age = document.getElementById("age");
+
+
+    // ==========================================
+    // SET DEATH STATUS
+    // ==========================================
+
     if (isDead === "YES") {
+
       status.textContent = "YES";
+
       status.style.color = "#ff5c5c";
+
     } else {
+
       status.textContent = "NO";
+
       status.style.color = "#45d483";
+
     }
+
+
+    // ==========================================
+    // CALCULATE JAMIE'S AGE
+    // ==========================================
+
+    function calculateAge() {
+
+      const now = new Date();
+
+
+      // Calculate years
+
+      let years =
+        now.getFullYear() - birthDate.getFullYear();
+
+
+      const birthdayThisYear = new Date(
+
+        now.getFullYear(),
+
+        birthDate.getMonth(),
+
+        birthDate.getDate(),
+
+        birthDate.getHours(),
+
+        birthDate.getMinutes(),
+
+        birthDate.getSeconds()
+
+      );
+
+
+      if (now < birthdayThisYear) {
+
+        years--;
+
+      }
+
+
+      // Calculate months
+
+      const afterYears = new Date(
+
+        birthDate.getFullYear() + years,
+
+        birthDate.getMonth(),
+
+        birthDate.getDate(),
+
+        birthDate.getHours(),
+
+        birthDate.getMinutes(),
+
+        birthDate.getSeconds()
+
+      );
+
+
+      let months = 0;
+
+      let monthDate = new Date(afterYears);
+
+
+      while (true) {
+
+        const nextMonth = new Date(
+
+          monthDate.getFullYear(),
+
+          monthDate.getMonth() + 1,
+
+          monthDate.getDate(),
+
+          birthDate.getHours(),
+
+          birthDate.getMinutes(),
+
+          birthDate.getSeconds()
+
+        );
+
+
+        if (nextMonth <= now) {
+
+          monthDate = nextMonth;
+
+          months++;
+
+        } else {
+
+          break;
+
+        }
+
+      }
+
+
+      // Calculate weeks, days, and hours
+
+      let remainingTime = now - monthDate;
+
+
+      const millisecondsPerHour =
+        1000 * 60 * 60;
+
+
+      const millisecondsPerDay =
+        millisecondsPerHour * 24;
+
+
+      const millisecondsPerWeek =
+        millisecondsPerDay * 7;
+
+
+      const weeks = Math.floor(
+
+        remainingTime / millisecondsPerWeek
+
+      );
+
+
+      remainingTime -=
+        weeks * millisecondsPerWeek;
+
+
+      const days = Math.floor(
+
+        remainingTime / millisecondsPerDay
+
+      );
+
+
+      remainingTime -=
+        days * millisecondsPerDay;
+
+
+      const hours = Math.floor(
+
+        remainingTime / millisecondsPerHour
+
+      );
+
+
+      // Display the age
+
+      age.textContent =
+        `Jamie Is ${years} years ${months} months ` +
+        `${weeks} weeks ${days} days ${hours} hours old.`;
+
+    }
+
+
+    // ==========================================
+    // START AGE COUNTER
+    // ==========================================
+
+    calculateAge();
+
+
+    // Update every minute
+
+    setInterval(
+
+      calculateAge,
+
+      60 * 1000
+
+    );
+
   </script>
 
 </body>
+
 </html>
