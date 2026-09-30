@@ -126,11 +126,6 @@
        ========================================== */
 
     .goon-counter {
-      position: absolute;
-
-      right: 30px;
-      top: 30px;
-
       width: 180px;
 
       padding: 15px;
@@ -142,6 +137,8 @@
       border-radius: 10px;
 
       text-align: center;
+
+      margin: 25px auto 0;
     }
 
     .goon-title {
@@ -174,7 +171,10 @@
     .eats-counters {
       display: none;
 
-      margin: 25px auto 0;
+      position: absolute;
+
+      right: 30px;
+      top: 30px;
 
       gap: 15px;
 
@@ -253,9 +253,14 @@
 
     @media (max-width: 700px) {
 
-      .goon-counter {
+      .eats-counters {
         position: static;
 
+        margin: 25px auto 0;
+
+      }
+
+      .goon-counter {
         margin: 25px auto 0;
       }
 
@@ -355,6 +360,7 @@
 
     <!-- ==========================================
          GOON COUNTER
+         NOW UNDER COUNTDOWN
          ========================================== -->
 
     <div
@@ -382,6 +388,7 @@
 
     <!-- ==========================================
          FINN EATS COUNTERS
+         NOW IN UPPER RIGHT
          ========================================== -->
 
     <div
@@ -469,49 +476,35 @@
         new Date();
 
 
-      // 210 years
-
       deathDate.setFullYear(
         deathDate.getFullYear() + 210
       );
 
-
-      // 56 months
 
       deathDate.setMonth(
         deathDate.getMonth() + 56
       );
 
 
-      // 43 weeks
-
       deathDate.setDate(
         deathDate.getDate() + (43 * 7)
       );
 
-
-      // 20 days
 
       deathDate.setDate(
         deathDate.getDate() + 20
       );
 
 
-      // 45 hours
-
       deathDate.setHours(
         deathDate.getHours() + 45
       );
 
 
-      // 3 minutes
-
       deathDate.setMinutes(
         deathDate.getMinutes() + 3
       );
 
-
-      // 10 seconds
 
       deathDate.setSeconds(
         deathDate.getSeconds() + 10
@@ -533,49 +526,35 @@
         new Date();
 
 
-      // 98 years
-
       deathDate.setFullYear(
         deathDate.getFullYear() + 98
       );
 
-
-      // 42 months
 
       deathDate.setMonth(
         deathDate.getMonth() + 42
       );
 
 
-      // 12 weeks
-
       deathDate.setDate(
         deathDate.getDate() + (12 * 7)
       );
 
-
-      // 23 days
 
       deathDate.setDate(
         deathDate.getDate() + 23
       );
 
 
-      // 4 hours
-
       deathDate.setHours(
         deathDate.getHours() + 4
       );
 
 
-      // 6 minutes
-
       deathDate.setMinutes(
         deathDate.getMinutes() + 6
       );
 
-
-      // 50 seconds
 
       deathDate.setSeconds(
         deathDate.getSeconds() + 50
@@ -605,25 +584,21 @@
         gender: "he",
 
         birthDate: new Date(
-
           2012,
           9,
           7,
           13,
           0,
           0
-
         ),
 
         deathDate: new Date(
-
           2056,
           7,
           11,
           6,
           0,
           45
-
         ),
 
         hasGoonCounter: true,
@@ -647,14 +622,12 @@
         gender: "she",
 
         birthDate: new Date(
-
           2013,
           1,
           12,
           17,
           0,
           0
-
         ),
 
         deathDate:
@@ -681,14 +654,12 @@
         gender: "he",
 
         birthDate: new Date(
-
           2013,
           2,
           10,
           0,
           0,
           0
-
         ),
 
         deathDate:
@@ -714,15 +685,10 @@
 
 
     // ==========================================
-    // GOON COUNTER LIMIT
+    // LIMITS
     // ==========================================
 
     const GOON_LIMIT = 1000;
-
-
-    // ==========================================
-    // EATS COUNTER LIMIT
-    // ==========================================
 
     const EATS_LIMIT = 24;
 
@@ -958,10 +924,6 @@
       const person =
         people[currentPerson];
 
-
-      // ========================================
-      // NO DEATH DATE
-      // ========================================
 
       if (!person.deathDate) {
 
@@ -1304,17 +1266,13 @@
         people[currentPerson];
 
 
-      // ========================================
       // NAME
-      // ========================================
 
       name.textContent =
         person.name;
 
 
-      // ========================================
       // QUESTION
-      // ========================================
 
       question.textContent =
 
@@ -1325,9 +1283,7 @@
           : "Is he dead?";
 
 
-      // ========================================
       // STATUS
-      // ========================================
 
       if (
 
@@ -1356,25 +1312,19 @@
       }
 
 
-      // ========================================
       // AGE
-      // ========================================
 
       calculateAge(
         person.birthDate
       );
 
 
-      // ========================================
       // DEATH COUNTDOWN
-      // ========================================
 
       updateCountdown();
 
 
-      // ========================================
       // GOON COUNTER
-      // ========================================
 
       if (
         person.hasGoonCounter
@@ -1395,9 +1345,7 @@
       }
 
 
-      // ========================================
       // FINN EATS COUNTERS
-      // ========================================
 
       if (
         person.name === "Finn"
@@ -1624,8 +1572,6 @@
 
       if (good) {
 
-        // Add to Good Eats
-
         if (
           goodEats <
           EATS_LIMIT
@@ -1638,8 +1584,6 @@
       }
 
       else {
-
-        // Add to Bad Eats
 
         if (
           badEats <
