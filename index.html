@@ -34,6 +34,12 @@
       padding: 20px;
     }
 
+    .question {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
     .person-selector {
       display: flex;
       align-items: center;
@@ -124,6 +130,10 @@
 
   <div class="container">
 
+    <div class="question">
+      Is he dead?
+    </div>
+
     <div class="person-selector">
 
       <button onclick="previousPerson()">←</button>
@@ -185,8 +195,6 @@
           0,
           0
         ),
-
-        // Death date
 
         deathDate: new Date(
           2056,
@@ -406,8 +414,6 @@
         people[currentPerson];
 
 
-      // If there is no death date
-
       if (!person.deathDate) {
 
         countdown.textContent =
@@ -426,10 +432,6 @@
       let remainingTime =
         person.deathDate - now;
 
-
-      // ==========================================
-      // IF DEATH DATE HAS BEEN REACHED
-      // ==========================================
 
       if (remainingTime <= 0) {
 
@@ -450,10 +452,6 @@
 
       }
 
-
-      // ==========================================
-      // CALCULATE YEARS
-      // ==========================================
 
       let years =
         person.deathDate.getFullYear() -
@@ -484,10 +482,6 @@
 
       }
 
-
-      // ==========================================
-      // CALCULATE REMAINING MONTHS
-      // ==========================================
 
       const afterYears =
         new Date(
@@ -546,11 +540,6 @@
 
       }
 
-
-      // ==========================================
-      // CALCULATE WEEKS, DAYS, HOURS, MINUTES
-      // AND SECONDS
-      // ==========================================
 
       remainingTime =
         person.deathDate - monthDate;
@@ -628,10 +617,6 @@
       );
 
 
-      // ==========================================
-      // DISPLAY COUNTDOWN
-      // ==========================================
-
       countdown.textContent =
 
         `${years} years ` +
@@ -642,10 +627,6 @@
         `${minutes} minutes ` +
         `${seconds} seconds`;
 
-
-      // ==========================================
-      // UPDATE BAR
-      // ==========================================
 
       const totalTime =
         person.deathDate -
@@ -664,10 +645,6 @@
           Math.min(100, percentage)
         ) + "%";
 
-
-      // ==========================================
-      // BAR COLOR
-      // ==========================================
 
       if (percentage <= 10) {
 
@@ -702,9 +679,6 @@
       name.textContent =
         person.name;
 
-
-      // Check if they have reached
-      // their death date
 
       if (
         person.deathDate &&
