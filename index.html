@@ -107,11 +107,14 @@
       width: 100%;
       background: #45d483;
       border-radius: 10px;
-      transition: width 1s linear, background 0.3s;
+      transition:
+        width 1s linear,
+        background 0.3s;
     }
 
+
     /* ==========================================
-       GOON COUNTER
+       GOON COUNTERS
        ========================================== */
 
     .goon-counter {
@@ -155,17 +158,27 @@
       font-size: 0.8rem;
     }
 
+
+    /* ==========================================
+       SUBTITLE
+       ========================================== */
+
     .subtitle {
       color: #777;
+
       font-size: 0.9rem;
+
       margin-top: 20px;
     }
 
     .updated {
       margin-top: 25px;
+
       color: #555;
+
       font-size: 0.75rem;
     }
+
 
     /* ==========================================
        MOBILE
@@ -185,15 +198,17 @@
 
 </head>
 
+
 <body>
 
   <div class="container">
+
 
     <!-- ==========================================
          QUESTION
          ========================================== -->
 
-    <div class="question">
+    <div class="question" id="question">
       Is he dead?
     </div>
 
@@ -204,11 +219,17 @@
 
     <div class="person-selector">
 
-      <button onclick="previousPerson()">←</button>
+      <button onclick="previousPerson()">
+        ←
+      </button>
 
-      <h1 id="name">Jamie</h1>
+      <h1 id="name">
+        Jamie
+      </h1>
 
-      <button onclick="nextPerson()">→</button>
+      <button onclick="nextPerson()">
+        →
+      </button>
 
     </div>
 
@@ -217,14 +238,20 @@
          STATUS
          ========================================== -->
 
-    <div class="status" id="status"></div>
+    <div
+      class="status"
+      id="status">
+    </div>
 
 
     <!-- ==========================================
          AGE
          ========================================== -->
 
-    <div class="age" id="age"></div>
+    <div
+      class="age"
+      id="age">
+    </div>
 
 
     <!-- ==========================================
@@ -235,7 +262,15 @@
       Left to live:
     </div>
 
-    <div class="countdown" id="countdown"></div>
+    <div
+      class="countdown"
+      id="countdown">
+    </div>
+
+
+    <!-- ==========================================
+         COUNTDOWN BAR
+         ========================================== -->
 
     <div class="countdown-bar">
 
@@ -262,13 +297,11 @@
       <div
         class="goon-number"
         id="goonNumber">
-
         0
-
       </div>
 
       <div class="goon-limit">
-        / 500
+        / 1000
       </div>
 
     </div>
@@ -292,6 +325,71 @@
 
   <script>
 
+
+    // ==========================================
+    // FINN'S DEATH DATE
+    // ==========================================
+
+    function createFinnDeathDate() {
+
+      const deathDate =
+        new Date();
+
+
+      // 210 years
+
+      deathDate.setFullYear(
+        deathDate.getFullYear() + 210
+      );
+
+
+      // 56 months
+
+      deathDate.setMonth(
+        deathDate.getMonth() + 56
+      );
+
+
+      // 43 weeks
+
+      deathDate.setDate(
+        deathDate.getDate() + (43 * 7)
+      );
+
+
+      // 20 days
+
+      deathDate.setDate(
+        deathDate.getDate() + 20
+      );
+
+
+      // 45 hours
+
+      deathDate.setHours(
+        deathDate.getHours() + 45
+      );
+
+
+      // 3 minutes
+
+      deathDate.setMinutes(
+        deathDate.getMinutes() + 3
+      );
+
+
+      // 10 seconds
+
+      deathDate.setSeconds(
+        deathDate.getSeconds() + 10
+      );
+
+
+      return deathDate;
+
+    }
+
+
     // ==========================================
     // PEOPLE
     // ==========================================
@@ -301,7 +399,7 @@
       {
         name: "Jamie",
 
-        isDead: "NO",
+        gender: "he",
 
         birthDate: new Date(
           2012,
@@ -319,14 +417,21 @@
           6,
           0,
           45
-        )
+        ),
+
+        hasGoonCounter: true,
+
+        goonCount: 0,
+
+        lastGoonDay:
+          new Date().toDateString()
       },
 
 
       {
         name: "Zana",
 
-        isDead: "NO",
+        gender: "she",
 
         birthDate: new Date(
           2013,
@@ -337,7 +442,40 @@
           0
         ),
 
-        deathDate: null
+        deathDate: null,
+
+        hasGoonCounter: false,
+
+        goonCount: 0,
+
+        lastGoonDay:
+          new Date().toDateString()
+      },
+
+
+      {
+        name: "Finn",
+
+        gender: "he",
+
+        birthDate: new Date(
+          2013,
+          2,
+          10,
+          0,
+          0,
+          0
+        ),
+
+        deathDate:
+          createFinnDeathDate(),
+
+        hasGoonCounter: true,
+
+        goonCount: 0,
+
+        lastGoonDay:
+          new Date().toDateString()
       }
 
     ];
@@ -351,11 +489,21 @@
 
 
     // ==========================================
+    // GOON COUNTER LIMIT
+    // ==========================================
+
+    const GOON_LIMIT = 1000;
+
+
+    // ==========================================
     // GET HTML ELEMENTS
     // ==========================================
 
     const name =
       document.getElementById("name");
+
+    const question =
+      document.getElementById("question");
 
     const status =
       document.getElementById("status");
@@ -369,11 +517,11 @@
     const countdownFill =
       document.getElementById("countdownFill");
 
-    const goonNumber =
-      document.getElementById("goonNumber");
-
     const goonCounter =
       document.getElementById("goonCounter");
+
+    const goonNumber =
+      document.getElementById("goonNumber");
 
 
     // ==========================================
@@ -382,69 +530,23 @@
 
     function calculateAge(birthDate) {
 
-      const now = new Date();
+      const now =
+        new Date();
+
 
       let years =
         now.getFullYear() -
         birthDate.getFullYear();
 
 
-      const birthdayThisYear = new Date(
+      const birthdayThisYear =
+        new Date(
 
-        now.getFullYear(),
+          now.getFullYear(),
 
-        birthDate.getMonth(),
+          birthDate.getMonth(),
 
-        birthDate.getDate(),
-
-        birthDate.getHours(),
-
-        birthDate.getMinutes(),
-
-        birthDate.getSeconds()
-
-      );
-
-
-      if (now < birthdayThisYear) {
-
-        years--;
-
-      }
-
-
-      const afterYears = new Date(
-
-        birthDate.getFullYear() + years,
-
-        birthDate.getMonth(),
-
-        birthDate.getDate(),
-
-        birthDate.getHours(),
-
-        birthDate.getMinutes(),
-
-        birthDate.getSeconds()
-
-      );
-
-
-      let months = 0;
-
-      let monthDate =
-        new Date(afterYears);
-
-
-      while (true) {
-
-        const nextMonth = new Date(
-
-          monthDate.getFullYear(),
-
-          monthDate.getMonth() + 1,
-
-          monthDate.getDate(),
+          birthDate.getDate(),
 
           birthDate.getHours(),
 
@@ -455,9 +557,61 @@
         );
 
 
+      if (now < birthdayThisYear) {
+
+        years--;
+
+      }
+
+
+      const afterYears =
+        new Date(
+
+          birthDate.getFullYear() + years,
+
+          birthDate.getMonth(),
+
+          birthDate.getDate(),
+
+          birthDate.getHours(),
+
+          birthDate.getMinutes(),
+
+          birthDate.getSeconds()
+
+        );
+
+
+      let months = 0;
+
+      let monthDate =
+        new Date(afterYears);
+
+
+      while (true) {
+
+        const nextMonth =
+          new Date(
+
+            monthDate.getFullYear(),
+
+            monthDate.getMonth() + 1,
+
+            monthDate.getDate(),
+
+            birthDate.getHours(),
+
+            birthDate.getMinutes(),
+
+            birthDate.getSeconds()
+
+          );
+
+
         if (nextMonth <= now) {
 
-          monthDate = nextMonth;
+          monthDate =
+            nextMonth;
 
           months++;
 
@@ -484,45 +638,54 @@
         millisecondsPerDay * 7;
 
 
-      const weeks = Math.floor(
+      const weeks =
+        Math.floor(
 
-        remainingTime /
-        millisecondsPerWeek
+          remainingTime /
+          millisecondsPerWeek
 
-      );
-
-
-      remainingTime -=
-        weeks * millisecondsPerWeek;
-
-
-      const days = Math.floor(
-
-        remainingTime /
-        millisecondsPerDay
-
-      );
+        );
 
 
       remainingTime -=
-        days * millisecondsPerDay;
+        weeks *
+        millisecondsPerWeek;
 
 
-      const hours = Math.floor(
+      const days =
+        Math.floor(
 
-        remainingTime /
-        millisecondsPerHour
+          remainingTime /
+          millisecondsPerDay
 
-      );
+        );
+
+
+      remainingTime -=
+        days *
+        millisecondsPerDay;
+
+
+      const hours =
+        Math.floor(
+
+          remainingTime /
+          millisecondsPerHour
+
+        );
 
 
       age.textContent =
 
         `${people[currentPerson].name} Is ` +
 
-        `${years} years ${months} months ` +
+        `${years} years ` +
 
-        `${weeks} weeks ${days} days ` +
+        `${months} months ` +
+
+        `${weeks} weeks ` +
+
+        `${days} days ` +
 
         `${hours} hours old.`;
 
@@ -554,7 +717,8 @@
       }
 
 
-      const now = new Date();
+      const now =
+        new Date();
 
 
       let remainingTime =
@@ -631,9 +795,13 @@
           now.getFullYear() + years,
 
           now.getMonth(),
+
           now.getDate(),
+
           now.getHours(),
+
           now.getMinutes(),
+
           now.getSeconds()
 
         );
@@ -666,7 +834,8 @@
 
 
         if (
-          nextMonth <= person.deathDate
+          nextMonth <=
+          person.deathDate
         ) {
 
           monthDate =
@@ -688,7 +857,8 @@
       // ==========================================
 
       remainingTime =
-        person.deathDate - monthDate;
+        person.deathDate -
+        monthDate;
 
 
       const millisecondsPerSecond =
@@ -707,60 +877,69 @@
         millisecondsPerDay * 7;
 
 
-      const weeks = Math.floor(
+      const weeks =
+        Math.floor(
 
-        remainingTime /
-        millisecondsPerWeek
+          remainingTime /
+          millisecondsPerWeek
 
-      );
-
-
-      remainingTime -=
-        weeks * millisecondsPerWeek;
-
-
-      const days = Math.floor(
-
-        remainingTime /
-        millisecondsPerDay
-
-      );
+        );
 
 
       remainingTime -=
-        days * millisecondsPerDay;
+        weeks *
+        millisecondsPerWeek;
 
 
-      const hours = Math.floor(
+      const days =
+        Math.floor(
 
-        remainingTime /
-        millisecondsPerHour
+          remainingTime /
+          millisecondsPerDay
 
-      );
-
-
-      remainingTime -=
-        hours * millisecondsPerHour;
-
-
-      const minutes = Math.floor(
-
-        remainingTime /
-        millisecondsPerMinute
-
-      );
+        );
 
 
       remainingTime -=
-        minutes * millisecondsPerMinute;
+        days *
+        millisecondsPerDay;
 
 
-      const seconds = Math.floor(
+      const hours =
+        Math.floor(
 
-        remainingTime /
-        millisecondsPerSecond
+          remainingTime /
+          millisecondsPerHour
 
-      );
+        );
+
+
+      remainingTime -=
+        hours *
+        millisecondsPerHour;
+
+
+      const minutes =
+        Math.floor(
+
+          remainingTime /
+          millisecondsPerMinute
+
+        );
+
+
+      remainingTime -=
+        minutes *
+        millisecondsPerMinute;
+
+
+      const seconds =
+        Math.floor(
+
+          remainingTime /
+          millisecondsPerSecond
+
+        );
 
 
       // ==========================================
@@ -770,16 +949,22 @@
       countdown.textContent =
 
         `${years} years ` +
+
         `${months} months ` +
+
         `${weeks} weeks ` +
+
         `${days} days ` +
+
         `${hours} hours ` +
+
         `${minutes} minutes ` +
+
         `${seconds} seconds`;
 
 
       // ==========================================
-      // UPDATE BAR
+      // UPDATE COUNTDOWN BAR
       // ==========================================
 
       const totalTime =
@@ -788,20 +973,25 @@
 
 
       const percentage =
+
         (person.deathDate - now) /
-        totalTime * 100;
+        totalTime *
+        100;
 
 
       countdownFill.style.width =
 
         Math.max(
           0,
-          Math.min(100, percentage)
+          Math.min(
+            100,
+            percentage
+          )
         ) + "%";
 
 
       // ==========================================
-      // BAR COLOR
+      // COUNTDOWN BAR COLOR
       // ==========================================
 
       if (percentage <= 10) {
@@ -809,12 +999,16 @@
         countdownFill.style.background =
           "#ff5c5c";
 
-      } else if (percentage <= 25) {
+      }
+
+      else if (percentage <= 25) {
 
         countdownFill.style.background =
           "#ffb347";
 
-      } else {
+      }
+
+      else {
 
         countdownFill.style.background =
           "#45d483";
@@ -834,8 +1028,25 @@
         people[currentPerson];
 
 
+      // ==========================================
+      // NAME
+      // ==========================================
+
       name.textContent =
         person.name;
+
+
+      // ==========================================
+      // QUESTION
+      // ==========================================
+
+      question.textContent =
+
+        person.gender === "she"
+
+          ? "Is she dead?"
+
+          : "Is he dead?";
 
 
       // ==========================================
@@ -843,8 +1054,11 @@
       // ==========================================
 
       if (
+
         person.deathDate &&
-        new Date() >= person.deathDate
+        new Date() >=
+        person.deathDate
+
       ) {
 
         status.textContent =
@@ -853,7 +1067,9 @@
         status.style.color =
           "#ff5c5c";
 
-      } else {
+      }
+
+      else {
 
         status.textContent =
           "NO";
@@ -874,7 +1090,7 @@
 
 
       // ==========================================
-      // COUNTDOWN
+      // DEATH COUNTDOWN
       // ==========================================
 
       updateCountdown();
@@ -882,15 +1098,18 @@
 
       // ==========================================
       // GOON COUNTER
-      // ONLY SHOW FOR JAMIE
       // ==========================================
 
-      if (person.name === "Jamie") {
+      if (person.hasGoonCounter) {
 
         goonCounter.style.display =
           "block";
 
-      } else {
+        updateGoonCounter();
+
+      }
+
+      else {
 
         goonCounter.style.display =
           "none";
@@ -910,7 +1129,8 @@
 
 
       if (
-        currentPerson >= people.length
+        currentPerson >=
+        people.length
       ) {
 
         currentPerson = 0;
@@ -946,25 +1166,17 @@
 
 
     // ==========================================
-    // GOON COUNTER
-    // ==========================================
-
-    const GOON_LIMIT = 500;
-
-    let goonCount = 0;
-
-    let lastGoonDay =
-      new Date().toDateString();
-
-
-    // ==========================================
-    // UPDATE GOON DISPLAY
+    // UPDATE GOON COUNTER
     // ==========================================
 
     function updateGoonCounter() {
 
+      const person =
+        people[currentPerson];
+
+
       goonNumber.textContent =
-        goonCount;
+        person.goonCount;
 
     }
 
@@ -979,15 +1191,33 @@
         new Date().toDateString();
 
 
-      if (today !== lastGoonDay) {
+      for (
+        let person of people
+      ) {
 
-        goonCount = 0;
+        if (!person.hasGoonCounter) {
 
-        lastGoonDay = today;
+          continue;
 
-        updateGoonCounter();
+        }
+
+
+        if (
+          person.lastGoonDay !==
+          today
+        ) {
+
+          person.goonCount = 0;
+
+          person.lastGoonDay =
+            today;
+
+        }
 
       }
+
+
+      updateGoonCounter();
 
     }
 
@@ -1001,37 +1231,56 @@
       checkGoonDay();
 
 
-      // Stop at 500
+      for (
+        let person of people
+      ) {
 
-      if (goonCount >= GOON_LIMIT) {
+        if (!person.hasGoonCounter) {
 
-        goonCount =
-          GOON_LIMIT;
+          continue;
 
-        updateGoonCounter();
-
-        return;
-
-      }
+        }
 
 
-      // Random number between 1 and 10
+        // Already at the limit
 
-      const increase =
-        Math.floor(
-          Math.random() * 10
-        ) + 1;
+        if (
+          person.goonCount >=
+          GOON_LIMIT
+        ) {
+
+          person.goonCount =
+            GOON_LIMIT;
+
+          continue;
+
+        }
 
 
-      goonCount += increase;
+        // Random number from 1 to 10
+
+        const increase =
+
+          Math.floor(
+            Math.random() * 10
+          ) + 1;
 
 
-      // Never go above 500
+        person.goonCount +=
+          increase;
 
-      if (goonCount > GOON_LIMIT) {
 
-        goonCount =
-          GOON_LIMIT;
+        // Never go above 1000
+
+        if (
+          person.goonCount >
+          GOON_LIMIT
+        ) {
+
+          person.goonCount =
+            GOON_LIMIT;
+
+        }
 
       }
 
@@ -1047,11 +1296,9 @@
 
     displayPerson();
 
-    updateGoonCounter();
-
 
     // ==========================================
-    // UPDATE DEATH COUNTDOWN EVERY SECOND
+    // UPDATE EVERYTHING EVERY SECOND
     // ==========================================
 
     setInterval(
@@ -1068,7 +1315,7 @@
 
 
     // ==========================================
-    // INCREASE GOON COUNTER EVERY 30 MINUTES
+    // INCREASE GOON COUNTERS EVERY 30 MINUTES
     // ==========================================
 
     setInterval(
@@ -1099,6 +1346,7 @@
       60 * 1000
 
     );
+
 
   </script>
 
