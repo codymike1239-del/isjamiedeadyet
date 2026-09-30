@@ -110,6 +110,51 @@
       transition: width 1s linear, background 0.3s;
     }
 
+    /* ==========================================
+       GOON COUNTER
+       ========================================== */
+
+    .goon-counter {
+      position: absolute;
+
+      right: 30px;
+      top: 30px;
+
+      width: 180px;
+
+      padding: 15px;
+
+      background: #1c1c1c;
+
+      border: 1px solid #333;
+
+      border-radius: 10px;
+
+      text-align: center;
+    }
+
+    .goon-title {
+      color: #aaa;
+
+      font-size: 1rem;
+
+      margin-bottom: 5px;
+    }
+
+    .goon-number {
+      color: #45d483;
+
+      font-size: 2.5rem;
+
+      font-weight: bold;
+    }
+
+    .goon-limit {
+      color: #666;
+
+      font-size: 0.8rem;
+    }
+
     .subtitle {
       color: #777;
       font-size: 0.9rem;
@@ -122,6 +167,20 @@
       font-size: 0.75rem;
     }
 
+    /* ==========================================
+       MOBILE
+       ========================================== */
+
+    @media (max-width: 700px) {
+
+      .goon-counter {
+        position: static;
+
+        margin: 25px auto 0;
+      }
+
+    }
+
   </style>
 
 </head>
@@ -130,9 +189,18 @@
 
   <div class="container">
 
+    <!-- ==========================================
+         QUESTION
+         ========================================== -->
+
     <div class="question">
       Is he dead?
     </div>
+
+
+    <!-- ==========================================
+         PERSON SELECTOR
+         ========================================== -->
 
     <div class="person-selector">
 
@@ -144,9 +212,24 @@
 
     </div>
 
+
+    <!-- ==========================================
+         STATUS
+         ========================================== -->
+
     <div class="status" id="status"></div>
 
+
+    <!-- ==========================================
+         AGE
+         ========================================== -->
+
     <div class="age" id="age"></div>
+
+
+    <!-- ==========================================
+         DEATH COUNTDOWN
+         ========================================== -->
 
     <div class="countdown-label">
       Left to live:
@@ -163,9 +246,36 @@
 
     </div>
 
+
+    <!-- ==========================================
+         GOON COUNTER
+         ========================================== -->
+
+    <div class="goon-counter">
+
+      <div class="goon-title">
+        Goon Counter
+      </div>
+
+      <div class="goon-number" id="goonNumber">
+        0
+      </div>
+
+      <div class="goon-limit">
+        / 500
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         SUBTITLE
+         ========================================== -->
+
     <div class="subtitle">
       Extremely reliable information
     </div>
+
 
     <div class="updated">
       Last checked: Definitely
@@ -205,6 +315,7 @@
           45
         )
       },
+
 
       {
         name: "Zana",
@@ -252,6 +363,9 @@
     const countdownFill =
       document.getElementById("countdownFill");
 
+    const goonNumber =
+      document.getElementById("goonNumber");
+
 
     // ==========================================
     // CALCULATE AGE
@@ -262,7 +376,8 @@
       const now = new Date();
 
       let years =
-        now.getFullYear() - birthDate.getFullYear();
+        now.getFullYear() -
+        birthDate.getFullYear();
 
 
       const birthdayThisYear = new Date(
@@ -308,7 +423,8 @@
 
       let months = 0;
 
-      let monthDate = new Date(afterYears);
+      let monthDate =
+        new Date(afterYears);
 
 
       while (true) {
@@ -414,12 +530,15 @@
         people[currentPerson];
 
 
+      // No death date
+
       if (!person.deathDate) {
 
         countdown.textContent =
           "No death countdown.";
 
-        countdownFill.style.width = "0%";
+        countdownFill.style.width =
+          "0%";
 
         return;
 
@@ -433,17 +552,23 @@
         person.deathDate - now;
 
 
+      // ==========================================
+      // DEATH DATE REACHED
+      // ==========================================
+
       if (remainingTime <= 0) {
 
         countdown.textContent =
           "TIME'S UP";
 
-        countdownFill.style.width = "0%";
+        countdownFill.style.width =
+          "0%";
 
         countdownFill.style.background =
           "#ff5c5c";
 
-        status.textContent = "YES";
+        status.textContent =
+          "YES";
 
         status.style.color =
           "#ff5c5c";
@@ -452,6 +577,10 @@
 
       }
 
+
+      // ==========================================
+      // YEARS
+      // ==========================================
 
       let years =
         person.deathDate.getFullYear() -
@@ -483,15 +612,23 @@
       }
 
 
+      // ==========================================
+      // MONTHS
+      // ==========================================
+
       const afterYears =
         new Date(
 
           now.getFullYear() + years,
 
           now.getMonth(),
+
           now.getDate(),
+
           now.getHours(),
+
           now.getMinutes(),
+
           now.getSeconds()
 
         );
@@ -540,6 +677,10 @@
 
       }
 
+
+      // ==========================================
+      // WEEKS / DAYS / HOURS / MINUTES / SECONDS
+      // ==========================================
 
       remainingTime =
         person.deathDate - monthDate;
@@ -617,6 +758,10 @@
       );
 
 
+      // ==========================================
+      // DISPLAY COUNTDOWN
+      // ==========================================
+
       countdown.textContent =
 
         `${years} years ` +
@@ -627,6 +772,10 @@
         `${minutes} minutes ` +
         `${seconds} seconds`;
 
+
+      // ==========================================
+      // UPDATE BAR
+      // ==========================================
 
       const totalTime =
         person.deathDate -
@@ -645,6 +794,10 @@
           Math.min(100, percentage)
         ) + "%";
 
+
+      // ==========================================
+      // BAR COLOR
+      // ==========================================
 
       if (percentage <= 10) {
 
@@ -685,14 +838,16 @@
         new Date() >= person.deathDate
       ) {
 
-        status.textContent = "YES";
+        status.textContent =
+          "YES";
 
         status.style.color =
           "#ff5c5c";
 
       } else {
 
-        status.textContent = "NO";
+        status.textContent =
+          "NO";
 
         status.style.color =
           "#45d483";
@@ -703,6 +858,7 @@
       calculateAge(
         person.birthDate
       );
+
 
       updateCountdown();
 
@@ -718,7 +874,9 @@
       currentPerson++;
 
 
-      if (currentPerson >= people.length) {
+      if (
+        currentPerson >= people.length
+      ) {
 
         currentPerson = 0;
 
@@ -741,7 +899,8 @@
 
       if (currentPerson < 0) {
 
-        currentPerson = people.length - 1;
+        currentPerson =
+          people.length - 1;
 
       }
 
@@ -752,14 +911,112 @@
 
 
     // ==========================================
+    // GOON COUNTER
+    // ==========================================
+
+    const GOON_LIMIT = 500;
+
+    let goonCount = 0;
+
+    let lastGoonDay =
+      new Date().toDateString();
+
+
+    // ==========================================
+    // UPDATE GOON DISPLAY
+    // ==========================================
+
+    function updateGoonCounter() {
+
+      goonNumber.textContent =
+        goonCount;
+
+    }
+
+
+    // ==========================================
+    // CHECK FOR NEW DAY
+    // ==========================================
+
+    function checkGoonDay() {
+
+      const today =
+        new Date().toDateString();
+
+
+      if (today !== lastGoonDay) {
+
+        goonCount = 0;
+
+        lastGoonDay = today;
+
+        updateGoonCounter();
+
+      }
+
+    }
+
+
+    // ==========================================
+    // INCREASE GOON COUNTER
+    // ==========================================
+
+    function increaseGoonCounter() {
+
+      checkGoonDay();
+
+
+      // Stop at 500
+
+      if (goonCount >= GOON_LIMIT) {
+
+        goonCount =
+          GOON_LIMIT;
+
+        updateGoonCounter();
+
+        return;
+
+      }
+
+
+      // Random number between 1 and 10
+
+      const increase =
+        Math.floor(
+          Math.random() * 10
+        ) + 1;
+
+
+      goonCount += increase;
+
+
+      // Never go above 500
+
+      if (goonCount > GOON_LIMIT) {
+
+        goonCount =
+          GOON_LIMIT;
+
+      }
+
+
+      updateGoonCounter();
+
+    }
+
+
+    // ==========================================
     // START
     // ==========================================
 
     displayPerson();
 
+    updateGoonCounter();
+
 
     // ==========================================
-    // UPDATE EVERY SECOND
+    // UPDATE DEATH COUNTDOWN EVERY SECOND
     // ==========================================
 
     setInterval(
@@ -771,6 +1028,40 @@
       },
 
       1000
+
+    );
+
+
+    // ==========================================
+    // INCREASE GOON COUNTER EVERY 30 MINUTES
+    // ==========================================
+
+    setInterval(
+
+      function() {
+
+        increaseGoonCounter();
+
+      },
+
+      30 * 60 * 1000
+
+    );
+
+
+    // ==========================================
+    // CHECK FOR NEW DAY EVERY MINUTE
+    // ==========================================
+
+    setInterval(
+
+      function() {
+
+        checkGoonDay();
+
+      },
+
+      60 * 1000
 
     );
 
