@@ -79,6 +79,13 @@
       margin-top: 20px;
     }
 
+    .countdown-label {
+      font-size: 1.2rem;
+      color: #bbb;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+
     .countdown-bar {
       width: 100%;
       max-width: 600px;
@@ -131,6 +138,10 @@
 
     <div class="age" id="age"></div>
 
+    <div class="countdown-label">
+      Left to live:
+    </div>
+
     <div class="countdown" id="countdown"></div>
 
     <div class="countdown-bar">
@@ -175,11 +186,7 @@
           0
         ),
 
-        // Death date:
-        // 43 years, 8 months,
-        // 4 weeks, 6 days,
-        // 17 hours and 45 seconds
-        // after birth
+        // Death date
 
         deathDate: new Date(
           2056,
@@ -330,7 +337,8 @@
       }
 
 
-      let remainingTime = now - monthDate;
+      let remainingTime =
+        now - monthDate;
 
 
       const millisecondsPerHour =
@@ -345,7 +353,8 @@
 
       const weeks = Math.floor(
 
-        remainingTime / millisecondsPerWeek
+        remainingTime /
+        millisecondsPerWeek
 
       );
 
@@ -356,7 +365,8 @@
 
       const days = Math.floor(
 
-        remainingTime / millisecondsPerDay
+        remainingTime /
+        millisecondsPerDay
 
       );
 
@@ -367,7 +377,8 @@
 
       const hours = Math.floor(
 
-        remainingTime / millisecondsPerHour
+        remainingTime /
+        millisecondsPerHour
 
       );
 
@@ -378,7 +389,9 @@
 
         `${years} years ${months} months ` +
 
-        `${weeks} weeks ${days} days ${hours} hours old.`;
+        `${weeks} weeks ${days} days ` +
+
+        `${hours} hours old.`;
 
     }
 
@@ -439,8 +452,109 @@
 
 
       // ==========================================
-      // CALCULATE COUNTDOWN
+      // CALCULATE YEARS
       // ==========================================
+
+      let years =
+        person.deathDate.getFullYear() -
+        now.getFullYear();
+
+
+      const deathDateThisYear =
+        new Date(
+
+          now.getFullYear(),
+
+          person.deathDate.getMonth(),
+
+          person.deathDate.getDate(),
+
+          person.deathDate.getHours(),
+
+          person.deathDate.getMinutes(),
+
+          person.deathDate.getSeconds()
+
+        );
+
+
+      if (now >= deathDateThisYear) {
+
+        years--;
+
+      }
+
+
+      // ==========================================
+      // CALCULATE REMAINING MONTHS
+      // ==========================================
+
+      const afterYears =
+        new Date(
+
+          now.getFullYear() + years,
+
+          now.getMonth(),
+          now.getDate(),
+          now.getHours(),
+          now.getMinutes(),
+          now.getSeconds()
+
+        );
+
+
+      let months = 0;
+
+      let monthDate =
+        new Date(afterYears);
+
+
+      while (true) {
+
+        const nextMonth =
+          new Date(
+
+            monthDate.getFullYear(),
+
+            monthDate.getMonth() + 1,
+
+            monthDate.getDate(),
+
+            monthDate.getHours(),
+
+            monthDate.getMinutes(),
+
+            monthDate.getSeconds()
+
+          );
+
+
+        if (
+          nextMonth <= person.deathDate
+        ) {
+
+          monthDate =
+            nextMonth;
+
+          months++;
+
+        } else {
+
+          break;
+
+        }
+
+      }
+
+
+      // ==========================================
+      // CALCULATE WEEKS, DAYS, HOURS, MINUTES
+      // AND SECONDS
+      // ==========================================
+
+      remainingTime =
+        person.deathDate - monthDate;
+
 
       const millisecondsPerSecond =
         1000;
@@ -520,6 +634,8 @@
 
       countdown.textContent =
 
+        `${years} years ` +
+        `${months} months ` +
         `${weeks} weeks ` +
         `${days} days ` +
         `${hours} hours ` +
@@ -542,6 +658,7 @@
 
 
       countdownFill.style.width =
+
         Math.max(
           0,
           Math.min(100, percentage)
