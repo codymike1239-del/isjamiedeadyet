@@ -73,6 +73,30 @@
       line-height: 1.6;
     }
 
+    .countdown {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-top: 20px;
+    }
+
+    .countdown-bar {
+      width: 100%;
+      max-width: 600px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      margin: 10px auto 0;
+      overflow: hidden;
+    }
+
+    .countdown-fill {
+      height: 100%;
+      width: 100%;
+      background: #45d483;
+      border-radius: 10px;
+      transition: width 1s linear, background 0.3s;
+    }
+
     .subtitle {
       color: #777;
       font-size: 0.9rem;
@@ -107,6 +131,17 @@
 
     <div class="age" id="age"></div>
 
+    <div class="countdown" id="countdown"></div>
+
+    <div class="countdown-bar">
+
+      <div
+        class="countdown-fill"
+        id="countdownFill">
+      </div>
+
+    </div>
+
     <div class="subtitle">
       Extremely reliable information
     </div>
@@ -138,6 +173,21 @@
           13,
           0,
           0
+        ),
+
+        // Death date:
+        // 43 years, 8 months,
+        // 4 weeks, 6 days,
+        // 17 hours and 45 seconds
+        // after birth
+
+        deathDate: new Date(
+          2056,
+          7,
+          11,
+          6,
+          0,
+          45
         )
       },
 
@@ -153,7 +203,9 @@
           17,
           0,
           0
-        )
+        ),
+
+        deathDate: null
       }
 
     ];
@@ -170,11 +222,20 @@
     // GET HTML ELEMENTS
     // ==========================================
 
-    const name = document.getElementById("name");
+    const name =
+      document.getElementById("name");
 
-    const status = document.getElementById("status");
+    const status =
+      document.getElementById("status");
 
-    const age = document.getElementById("age");
+    const age =
+      document.getElementById("age");
+
+    const countdown =
+      document.getElementById("countdown");
+
+    const countdownFill =
+      document.getElementById("countdownFill");
 
 
     // ==========================================
@@ -317,9 +378,196 @@
 
         `${years} years ${months} months ` +
 
-        `${weeks} weeks ${days} days ` +
+        `${weeks} weeks ${days} days ${hours} hours old.`;
 
-        `${hours} hours old.`;
+    }
+
+
+    // ==========================================
+    // DEATH COUNTDOWN
+    // ==========================================
+
+    function updateCountdown() {
+
+      const person =
+        people[currentPerson];
+
+
+      // If there is no death date
+
+      if (!person.deathDate) {
+
+        countdown.textContent =
+          "No death countdown.";
+
+        countdownFill.style.width = "0%";
+
+        return;
+
+      }
+
+
+      const now = new Date();
+
+
+      let remainingTime =
+        person.deathDate - now;
+
+
+      // ==========================================
+      // IF DEATH DATE HAS BEEN REACHED
+      // ==========================================
+
+      if (remainingTime <= 0) {
+
+        countdown.textContent =
+          "TIME'S UP";
+
+        countdownFill.style.width = "0%";
+
+        countdownFill.style.background =
+          "#ff5c5c";
+
+        status.textContent = "YES";
+
+        status.style.color =
+          "#ff5c5c";
+
+        return;
+
+      }
+
+
+      // ==========================================
+      // CALCULATE COUNTDOWN
+      // ==========================================
+
+      const millisecondsPerSecond =
+        1000;
+
+      const millisecondsPerMinute =
+        millisecondsPerSecond * 60;
+
+      const millisecondsPerHour =
+        millisecondsPerMinute * 60;
+
+      const millisecondsPerDay =
+        millisecondsPerHour * 24;
+
+      const millisecondsPerWeek =
+        millisecondsPerDay * 7;
+
+
+      const weeks = Math.floor(
+
+        remainingTime /
+        millisecondsPerWeek
+
+      );
+
+
+      remainingTime -=
+        weeks * millisecondsPerWeek;
+
+
+      const days = Math.floor(
+
+        remainingTime /
+        millisecondsPerDay
+
+      );
+
+
+      remainingTime -=
+        days * millisecondsPerDay;
+
+
+      const hours = Math.floor(
+
+        remainingTime /
+        millisecondsPerHour
+
+      );
+
+
+      remainingTime -=
+        hours * millisecondsPerHour;
+
+
+      const minutes = Math.floor(
+
+        remainingTime /
+        millisecondsPerMinute
+
+      );
+
+
+      remainingTime -=
+        minutes * millisecondsPerMinute;
+
+
+      const seconds = Math.floor(
+
+        remainingTime /
+        millisecondsPerSecond
+
+      );
+
+
+      // ==========================================
+      // DISPLAY COUNTDOWN
+      // ==========================================
+
+      countdown.textContent =
+
+        `${weeks} weeks ` +
+        `${days} days ` +
+        `${hours} hours ` +
+        `${minutes} minutes ` +
+        `${seconds} seconds`;
+
+
+      // ==========================================
+      // UPDATE BAR
+      // ==========================================
+
+      const totalTime =
+        person.deathDate -
+        person.birthDate;
+
+
+      const percentage =
+        (person.deathDate - now) /
+        totalTime * 100;
+
+
+      countdownFill.style.width =
+        Math.max(
+          0,
+          Math.min(100, percentage)
+        ) + "%";
+
+
+      // ==========================================
+      // BAR COLOR
+      // ==========================================
+
+      if (percentage <= 10) {
+
+        countdownFill.style.background =
+          "#ff5c5c";
+
+      } else if (percentage <= 25) {
+
+        countdownFill.style.background =
+          "#ffb347";
+
+      } else {
+
+        countdownFill.style.background =
+          "#45d483";
+
+      }
 
     }
 
@@ -330,28 +578,42 @@
 
     function displayPerson() {
 
-      const person = people[currentPerson];
+      const person =
+        people[currentPerson];
 
 
-      name.textContent = person.name;
+      name.textContent =
+        person.name;
 
 
-      if (person.isDead === "YES") {
+      // Check if they have reached
+      // their death date
+
+      if (
+        person.deathDate &&
+        new Date() >= person.deathDate
+      ) {
 
         status.textContent = "YES";
 
-        status.style.color = "#ff5c5c";
+        status.style.color =
+          "#ff5c5c";
 
       } else {
 
         status.textContent = "NO";
 
-        status.style.color = "#45d483";
+        status.style.color =
+          "#45d483";
 
       }
 
 
-      calculateAge(person.birthDate);
+      calculateAge(
+        person.birthDate
+      );
+
+      updateCountdown();
 
     }
 
@@ -405,13 +667,19 @@
     displayPerson();
 
 
-    // Update every minute
+    // ==========================================
+    // UPDATE EVERY SECOND
+    // ==========================================
 
     setInterval(
 
-      displayPerson,
+      function() {
 
-      60 * 1000
+        displayPerson();
+
+      },
+
+      1000
 
     );
 
