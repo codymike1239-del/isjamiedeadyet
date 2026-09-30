@@ -114,7 +114,7 @@
 
 
     /* ==========================================
-       GOON COUNTERS
+       GOON COUNTER
        ========================================== */
 
     .goon-counter {
@@ -165,17 +165,13 @@
 
     .subtitle {
       color: #777;
-
       font-size: 0.9rem;
-
       margin-top: 20px;
     }
 
     .updated {
       margin-top: 25px;
-
       color: #555;
-
       font-size: 0.75rem;
     }
 
@@ -188,7 +184,6 @@
 
       .goon-counter {
         position: static;
-
         margin: 25px auto 0;
       }
 
@@ -297,7 +292,9 @@
       <div
         class="goon-number"
         id="goonNumber">
+
         0
+
       </div>
 
       <div class="goon-limit">
@@ -327,7 +324,7 @@
 
 
     // ==========================================
-    // FINN'S DEATH DATE
+    // CREATE FINN DEATH DATE
     // ==========================================
 
     function createFinnDeathDate() {
@@ -391,6 +388,70 @@
 
 
     // ==========================================
+    // CREATE ZANA DEATH DATE
+    // ==========================================
+
+    function createZanaDeathDate() {
+
+      const deathDate =
+        new Date();
+
+
+      // 98 years
+
+      deathDate.setFullYear(
+        deathDate.getFullYear() + 98
+      );
+
+
+      // 42 months
+
+      deathDate.setMonth(
+        deathDate.getMonth() + 42
+      );
+
+
+      // 12 weeks
+
+      deathDate.setDate(
+        deathDate.getDate() + (12 * 7)
+      );
+
+
+      // 23 days
+
+      deathDate.setDate(
+        deathDate.getDate() + 23
+      );
+
+
+      // 4 hours
+
+      deathDate.setHours(
+        deathDate.getHours() + 4
+      );
+
+
+      // 6 minutes
+
+      deathDate.setMinutes(
+        deathDate.getMinutes() + 6
+      );
+
+
+      // 50 seconds
+
+      deathDate.setSeconds(
+        deathDate.getSeconds() + 50
+      );
+
+
+      return deathDate;
+
+    }
+
+
+    // ==========================================
     // PEOPLE
     // ==========================================
 
@@ -442,7 +503,8 @@
           0
         ),
 
-        deathDate: null,
+        deathDate:
+          createZanaDeathDate(),
 
         hasGoonCounter: false,
 
@@ -615,7 +677,9 @@
 
           months++;
 
-        } else {
+        }
+
+        else {
 
           break;
 
@@ -843,7 +907,9 @@
 
           months++;
 
-        } else {
+        }
+
+        else {
 
           break;
 
@@ -964,7 +1030,7 @@
 
 
       // ==========================================
-      // UPDATE COUNTDOWN BAR
+      // COUNTDOWN BAR
       // ==========================================
 
       const totalTime =
@@ -991,7 +1057,7 @@
 
 
       // ==========================================
-      // COUNTDOWN BAR COLOR
+      // BAR COLOR
       // ==========================================
 
       if (percentage <= 10) {
@@ -1207,7 +1273,8 @@
           today
         ) {
 
-          person.goonCount = 0;
+          person.goonCount =
+            0;
 
           person.lastGoonDay =
             today;
@@ -1223,7 +1290,7 @@
 
 
     // ==========================================
-    // INCREASE GOON COUNTER
+    // INCREASE GOON COUNTERS
     // ==========================================
 
     function increaseGoonCounter() {
@@ -1242,8 +1309,6 @@
         }
 
 
-        // Already at the limit
-
         if (
           person.goonCount >=
           GOON_LIMIT
@@ -1260,7 +1325,6 @@
         // Random number from 1 to 10
 
         const increase =
-
           Math.floor(
             Math.random() * 10
           ) + 1;
@@ -1270,7 +1334,7 @@
           increase;
 
 
-        // Never go above 1000
+        // Never exceed 1000
 
         if (
           person.goonCount >
@@ -1298,7 +1362,7 @@
 
 
     // ==========================================
-    // UPDATE EVERYTHING EVERY SECOND
+    // UPDATE EVERY SECOND
     // ==========================================
 
     setInterval(
