@@ -1,6 +1,6 @@
 Is He Dead?
 
-A highly sophisticated system for determining whether my friend is dead.
+A highly sophisticated system for determining whether my friends are dead.
 
 What is this?
 
