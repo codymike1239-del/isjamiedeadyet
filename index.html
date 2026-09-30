@@ -251,14 +251,20 @@
          GOON COUNTER
          ========================================== -->
 
-    <div class="goon-counter">
+    <div
+      class="goon-counter"
+      id="goonCounter">
 
       <div class="goon-title">
         Goon Counter
       </div>
 
-      <div class="goon-number" id="goonNumber">
+      <div
+        class="goon-number"
+        id="goonNumber">
+
         0
+
       </div>
 
       <div class="goon-limit">
@@ -365,6 +371,9 @@
 
     const goonNumber =
       document.getElementById("goonNumber");
+
+    const goonCounter =
+      document.getElementById("goonCounter");
 
 
     // ==========================================
@@ -622,13 +631,9 @@
           now.getFullYear() + years,
 
           now.getMonth(),
-
           now.getDate(),
-
           now.getHours(),
-
           now.getMinutes(),
-
           now.getSeconds()
 
         );
@@ -833,6 +838,10 @@
         person.name;
 
 
+      // ==========================================
+      // STATUS
+      // ==========================================
+
       if (
         person.deathDate &&
         new Date() >= person.deathDate
@@ -855,12 +864,38 @@
       }
 
 
+      // ==========================================
+      // AGE
+      // ==========================================
+
       calculateAge(
         person.birthDate
       );
 
 
+      // ==========================================
+      // COUNTDOWN
+      // ==========================================
+
       updateCountdown();
+
+
+      // ==========================================
+      // GOON COUNTER
+      // ONLY SHOW FOR JAMIE
+      // ==========================================
+
+      if (person.name === "Jamie") {
+
+        goonCounter.style.display =
+          "block";
+
+      } else {
+
+        goonCounter.style.display =
+          "none";
+
+      }
 
     }
 
